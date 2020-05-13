@@ -1,0 +1,46 @@
+# Third party libraries
+_orb_slam2
+_slambook2_gaoxiang
+
+# Directories containing compiled files
+bin
+build
+
+# Visual Studio Code settings
+.vscode
+
+# macOS-specific files
+.DS_Store
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
