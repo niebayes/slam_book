@@ -85,6 +85,33 @@
 # 该命令可同时对多个 targets 设置属性。
 # set_target_properties()
 
+
+# 一些可能有用的变量 
+# 与项目及 CMakeLists.txt 文件有关的 目录 变量
+# CMAKE_SOURCE_DIR # 源码树的顶级源文件目录
+# CMAKE_BINARY_DIR # 源码数的顶级构建目录
+# CMAKE_CURRENT_BINARY_DIR # 当前正在处理的构建目录。每个由add_subdirectory() 添加的目录将会在构建树中创建一个构建目录。
+# CMAKE_CURRENT_LIST_DIR # 当前处理的CMakeLists.txt文件所在的目录。
+# CMAKE_CURRENT_SOURCE_DIR # 当前处理的源码目录。
+# CMAKE_HOME_DIRECTORY # 源码树的顶级目录的路径。
+
+# CMake 版本号 
+# CMAKE_VERSION # 全版本号
+# CMAKE_MAJOR_VERSION # 主版本号
+# CMAKE_MINOR_VERSION # 次版本号
+
+# 与项目名称有关的变量
+# CMAKE_PROJECT_NAME # the name from the last project call from the root CMakeLists.txt
+# PROJECT_NAME # the name from the last project call, regardless from the location of the file containing the command. More info, see: https://stackoverflow.com/a/38940669
+# PROJECT_SOURCE_DIR # 当前工程的源文件目录
+# PROJECT_BINARY_DIR # 当前工程的构建目录
+# <project_name>_SOURCE_DIR # <project_name> 的源文件目录
+# <project_name>_BINARY_DIR # <project_name> 的构建目录
+
+# 与编译有关的
+# 当开启时创建verbose的构建文件。默认为false.当设置为真时，CMake会产生verbose构建文件，它会显示使用到的每个命令行。
+# CMAKE_VERBOSE_MAKEFILE # set(CMAKE_VERBOSE_MAKEFILE ON)
+
 ################################################################################
 
 # 外部库：
@@ -99,6 +126,9 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 message("Build type: " ${CMAKE_BUILD_TYPE})
+
+# 一些设置：
+# set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # 设置编译器 options：
 # CXXFLAGS 传给 编译器和汇编器；LDFLAGS 传给 链接器。
@@ -118,38 +148,50 @@ else()
    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-# 设置一些东西
-# 为什么没用？
-# LIST(APPEND CMAKE_MODULE_PATH "/Users/bayes/slam_lib/Sophus/build")
-
 # 添加外部库
+# eigen got 
+# sophus got (not by find_package() however)
+# pangolin got
+
 # 查找库时，可以用库的原名称; 使用随着 find_pacakge() 命令加载的变量时，使用全大写，如 EIGEN3, SOPHUS, PANGOLIN 等
 # eigen
 find_package(Eigen3 REQUIRED)
 if (EIGEN3_FOUND)
-    message("Found Eigen3")
+    message("Found Eigen3" " Path ${EIGEN3_INCLUDE_DIRS}")
     # 使用 message 打印路径或带有空格的字符串时，注意加 双引号 " "
-    message("Path to Eigen3 header files: ${EIGEN3_INCLUDE_DIRS}")
 else() 
     message("Not Found Eigen3")
 endif()
 
 # sophus 
+# set(CMAKE_MODULE_PATH 
+#     ${CMAKE_MODULE_PATH} 
+#     "/Users/bayes/slam_lib/Sophus/build/SophusConfig.cmake"
+# )
 find_package(Sophus REQUIRED)
 if (Sophus_FOUND)
     message("Found Sophus")
+    include_directories(${Sophus_INCLUDE_DIRS})
     # 使用 message 打印路径或带有空格的字符串时，注意加 双引号 " "
-    message("Path to Sophus header files: ${SOPHUS_INCLUDE_DIRS}")
 else()
-    message("Not Found Sophus")
+    message("Not Found Sophus. Manually add it.")
+    include_directories("/Users/bayes/slam_lib/Sophus")
 endif()
 
+# Panlogin
+find_package(Pangolin REQUIRED)
+if (Pangolin_FOUND)
+    message("Found Pangolin" " Path ${Pangolin_INCLUDE_DIRS}")
+else()
+    message("Not Found Pangolin")
+endif()
 # 添加额外的头文件搜寻目录
 include_directories(BEFORE
     ${PROJECT_SOURCE_DIR}/include
     ${EIGEN3_INCLUDE_DIRS}
     # ${Sophus_INCLUDE_DIRS}
     "/Users/bayes/slam_lib/Sophus"
+    ${Pangolin_INCLUDE_DIRS}
 ) # path relative to this CMakeLists.txt
 
 
@@ -164,13 +206,20 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
 # add_executable(main src/main.cc)
 # target_link_libraries(main ${PROJECT_NAME})
 
-add_library(hello_slam SHARED
-    src/hello_slam.cc
-)
-add_executable(main src/main.cc)
-target_link_libraries(main
-    hello_slam
-    # ${EIGEN3_LIBS} # eigen库只有头文件（确实是这样，为什么可以这样呢？），没有库文件。因此不需要进行链接。
-    ${Sophus_LIBRARIES}
-)
+# 作为主项目编译时的配置：
+# add_library(hello_slam SHARED
+#     src/hello_slam.cc
+# )
+# add_executable(main src/main.cc)
+# target_link_libraries(main
+#     hello_slam
+#     # ${EIGEN3_LIBS} # eigen库只有头文件（确实是这样，为什么可以这样呢？），没有库文件。因此不需要进行链接。
+#     ${Sophus_LIBRARIES}
+#     ${Pangolin_LIBRARIES}
+# )
+
+# 添加子项目，将以上的配置应用到子项目中 
+# add_subdirectory(<source_dir> <binary_dir>) # 指定子项目的 CMakeLists.txt 的所在目录 及 子项目将要生成的可执行文件的目录。如未指定 <binary_dir> 那么 <binary_dir> = <source_dir> 
+# 也可以在子项目通过 set(CMAKE_RUNTIME_OUTPUT_DIRECOTRY <dir>) 来设置 <binary_dir>
+add_subdirectory(src/ch4/trajectory_error)
 
