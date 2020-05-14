@@ -114,10 +114,8 @@
 
 ################################################################################
 
-# 外部库：
-# Eigen3 got 
-# Sophus got
-
+# The FATAL_ERROR option is accepted but ignored by CMake 2.6 and higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just a warning.
+# cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 cmake_minimum_required(VERSION 3.0)
 project(HelloSLAM) 
 
@@ -127,19 +125,17 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 message("Build type: " ${CMAKE_BUILD_TYPE})
 
-# 一些设置：
-# set(CMAKE_VERBOSE_MAKEFILE ON)
-
 # 设置编译器 options：
 # CXXFLAGS 传给 编译器和汇编器；LDFLAGS 传给 链接器。
 # -Wall 开启所有警告；-O3 开启3级 optimization。开启后，编译时间和空间均增加，而生成的代码大小和运行时间均降低。大多数程序和库在编译器选择的是默认的 -O2 级别，这已经启用绝大多数安全的优化选项了; -march=native 按照特定的CPU进行优化，native表示当前CPU。
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O3 -march=native")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O3 -march=native")
+set(CMAKE_CXX_STANDARD 11)
 
 # 检查编译器是否支持C++11特性
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
 if(COMPILER_SUPPORTS_CXX11)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-dev") 
    add_definitions(-DCOMPILEDWITHC11)
    message(STATUS "Using flag -std=c++11.")
 #    更推荐使用这个方式添加C++11特性支持
@@ -149,9 +145,14 @@ else()
 endif()
 
 # 添加外部库
-# eigen got 
-# sophus got (not by find_package() however)
-# pangolin got
+# eigen got。不需要 link eigen_lib
+# sophus got (not by find_package() however)。好像不需要 link sophus_lib
+# pangolin got。需要 link pangolin_lib
+# opencv got。需要 link opencv_lib
+# ceres got。需要 link ceres_lib 
+# g2o got。需要 link G2O_CORE_LIBRARY and G2O_STUFF_LIBRARY （可能有时候只需要一个？？）。经测试，不能将 g2o 的 LIBRARY 写成 LIBRARIES 
+# pcl got。 
+# googletest got。
 
 # 查找库时，可以用库的原名称; 使用随着 find_pacakge() 命令加载的变量时，使用全大写，如 EIGEN3, SOPHUS, PANGOLIN 等
 # eigen
@@ -185,6 +186,43 @@ if (Pangolin_FOUND)
 else()
     message("Not Found Pangolin")
 endif()
+
+# OpenCV 
+find_package(OpenCV REQUIRED)
+if (OpenCV_FOUND)
+    message("Found OpenCV" " Path ${OpenCV_INCLUDE_DIRS}")
+else()
+    message("Not Found OpenCV")
+endif()
+
+# Ceres
+find_package(Ceres REQUIRED)
+if (CERES_FOUND)
+    message("Found Ceres" " Path ${CERES_INCLUDE_DIRS}")
+else()
+    message("Not Found Ceres")
+endif()
+
+# g2o
+# brew安装的版本是 2017/07/30 发布的老版本 g2o。 新版本 g2o 相较于老版本有一定的变化：把原来的祼指针统一改成了智能指针。因此不要用brew安装，而自己从 Github pull 下来再编译。
+# g2o 链接库时，需使用 G2O_CORE_LIBRARY and G2O_STUFF_LIBRARY，而不是一般的写法：G2O_LIBRARIES
+# 这条命令在某些时候有用(??)
+# list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+find_package(G2O REQUIRED)
+if (G2O_FOUND)
+    message("Found g2o" " Path ${G2O_INCLUDE_DIRS}")
+else()
+    message("Not Found g2o")
+endif()
+
+# pcl 
+find_package(PCL REQUIRED)
+if (PCL_FOUND)
+    message("Found pcl" " Path ${PCL_INCLUDE_DIRS}")
+else()
+    message("Not Found pcl")
+endif()
+
 # 添加额外的头文件搜寻目录
 include_directories(BEFORE
     ${PROJECT_SOURCE_DIR}/include
@@ -192,6 +230,11 @@ include_directories(BEFORE
     # ${Sophus_INCLUDE_DIRS}
     "/Users/bayes/slam_lib/Sophus"
     ${Pangolin_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
+    ${CERES_INCLUDE_DIRS}
+    ${G2O_INCLUDE_DIRS}
+    # "/Users/bayes/slam_lib/g2o"
+    # ${PCL_INCLUDE_DIRS}
 ) # path relative to this CMakeLists.txt
 
 
@@ -220,6 +263,12 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
 
 # 添加子项目，将以上的配置应用到子项目中 
 # add_subdirectory(<source_dir> <binary_dir>) # 指定子项目的 CMakeLists.txt 的所在目录 及 子项目将要生成的可执行文件的目录。如未指定 <binary_dir> 那么 <binary_dir> = <source_dir> 
-# 也可以在子项目通过 set(CMAKE_RUNTIME_OUTPUT_DIRECOTRY <dir>) 来设置 <binary_dir>
+# 也可以在子项目通过 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY <dir>) 来设置 <binary_dir>
+# 以上两种方法并不一样：如果未指定 <binary_dir> 且 设置了 CMAKE_RUNTIME_OUTPUT_DIRECTORY。那么 <source_dir> 和CMAKE_RUNTIME_OUTPUT_DIRECTORY 这两个位置都会有 binary output files。
+# 因此，（暂时）还是需要在 add_subdirectory() 指定 <binary_dir> 而不是在子项目中设置变量。
 add_subdirectory(src/ch4/trajectory_error)
+add_subdirectory(src/ch5/image_basics)
+add_subdirectory(src/ch6/ceres_curve_fitting)
+add_subdirectory(src/ch6/g2o_curve_fitting)
+add_subdirectory(tmp/pcl_write)
 
