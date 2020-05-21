@@ -112,6 +112,8 @@
 # 当开启时创建verbose的构建文件。默认为false.当设置为真时，CMake会产生verbose构建文件，它会显示使用到的每个命令行。
 # CMAKE_VERBOSE_MAKEFILE # set(CMAKE_VERBOSE_MAKEFILE ON)
 
+# More info about cmake package and making package, see: https://cmake.org/cmake/help/git-master/manual/cmake-packages.7.html#cmake-packages-7
+
 ################################################################################
 
 # The FATAL_ERROR option is accepted but ignored by CMake 2.6 and higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just a warning.
@@ -216,6 +218,8 @@ else()
 endif()
 
 # pcl 
+# pcl是一个模块组成的库，因此在 find_pacakge() 时需指定查找的模块(??一定要吗)：
+# find_package(PCL 1.3 REQUIRED COMPONENTS common io)
 find_package(PCL REQUIRED)
 if (PCL_FOUND)
     message("Found pcl" " Path ${PCL_INCLUDE_DIRS}")
@@ -266,9 +270,13 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
 # 也可以在子项目通过 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY <dir>) 来设置 <binary_dir>
 # 以上两种方法并不一样：如果未指定 <binary_dir> 且 设置了 CMAKE_RUNTIME_OUTPUT_DIRECTORY。那么 <source_dir> 和CMAKE_RUNTIME_OUTPUT_DIRECTORY 这两个位置都会有 binary output files。
 # 因此，（暂时）还是需要在 add_subdirectory() 指定 <binary_dir> 而不是在子项目中设置变量。
-add_subdirectory(src/ch4/trajectory_error)
-add_subdirectory(src/ch5/image_basics)
-add_subdirectory(src/ch6/ceres_curve_fitting)
-add_subdirectory(src/ch6/g2o_curve_fitting)
-add_subdirectory(tmp/pcl_write)
 
+# 检测各个开源库是否能被正确找到并编译
+# add_subdirectory(src/ch4/trajectory_error)
+# add_subdirectory(src/ch5/image_basics)
+# add_subdirectory(src/ch6/ceres_curve_fitting)
+# add_subdirectory(src/ch6/g2o_curve_fitting)
+# add_subdirectory(tmp/pcl_write)
+
+# My codes 
+add_subdirectory(src/ch6/my_codes ${CMAKE_BINARY_DIR}/_my_codes_build)
