@@ -167,10 +167,9 @@ else()
 endif()
 
 # sophus 
-# set(CMAKE_MODULE_PATH 
-#     ${CMAKE_MODULE_PATH} 
-#     "/Users/bayes/slam_lib/Sophus/build/SophusConfig.cmake"
-# )
+# To use Sophus, follow the instructions below. 
+# find_package(Sophus REQUIRED)
+# target_link_libraries(target Sophus::Sophus)
 find_package(Sophus REQUIRED)
 if (Sophus_FOUND)
     message("Found Sophus")
@@ -227,6 +226,11 @@ else()
     message("Not Found pcl")
 endif()
 
+# glog 
+# To use glog, follow instructions below.
+# find_package(glog REQUIRED) 
+# target_link_libraries(target glog::glog)
+
 # 添加额外的头文件搜寻目录
 include_directories(BEFORE
     ${PROJECT_SOURCE_DIR}/include
@@ -259,10 +263,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
 # )
 # add_executable(main src/main.cc)
 # target_link_libraries(main
-#     hello_slam
-#     # ${EIGEN3_LIBS} # eigen库只有头文件（确实是这样，为什么可以这样呢？），没有库文件。因此不需要进行链接。
-#     ${Sophus_LIBRARIES}
 #     ${Pangolin_LIBRARIES}
+    # ${CERES_LIBRARIES}
 # )
 
 # 添加子项目，将以上的配置应用到子项目中 
