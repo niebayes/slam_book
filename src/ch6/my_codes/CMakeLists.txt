@@ -18,5 +18,6 @@ project(my_ch6)
 add_executable(ceres_curve_fitting ceres_curve_fitting.cc)
 target_link_libraries(ceres_curve_fitting 
     ${CERES_LIBRARIES}
+    ${OpenCV_LIBRARIES}
     # glog::glog
 )
