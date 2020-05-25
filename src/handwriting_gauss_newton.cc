@@ -33,7 +33,7 @@ struct iter_result {
 class GaussNewton {
   // * Gauss-Newton method for params optimization.
  public:
-  inline double func(vd &beta, const double x) {
+  double func(vd &beta, const double x) {
     // * The Function whose params are to be estimated.
     const double y = exp(beta[0] * x * x + beta[1] * x + beta[2]);
     return y;

@@ -19,3 +19,7 @@ then
 export GIT_AUTHOR_NAME="$CORRECT_NAME"
 export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
 fi' -f --tag-name-filter cat -- --branches --tags
+
+# Usage 
+# sh git_commit_reset.sh 
+# git push --force --tags origin 'refs/heads/*'

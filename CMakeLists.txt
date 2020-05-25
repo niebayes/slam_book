@@ -281,4 +281,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
 # add_subdirectory(tmp/pcl_write)
 
 # My codes 
-add_subdirectory(src/ch6/my_codes ${CMAKE_BINARY_DIR}/_my_codes_build)
+# add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/src ${CMAKE_BINARY_DIR}/exe)
+
