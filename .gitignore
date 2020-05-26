@@ -1,5 +1,6 @@
 # Third party libraries
-_orb_slam2
+# _orb_slam2
+# _g2o
 _slambook2_gaoxiang
 
 # Directories containing compiled files

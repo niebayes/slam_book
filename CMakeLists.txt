@@ -152,7 +152,7 @@ endif()
 # pangolin got。需要 link pangolin_lib
 # opencv got。需要 link opencv_lib
 # ceres got。需要 link ceres_lib 
-# g2o got。需要 link G2O_CORE_LIBRARY and G2O_STUFF_LIBRARY （可能有时候只需要一个？？）。经测试，不能将 g2o 的 LIBRARY 写成 LIBRARIES 
+# g2o got。需要 link G2O_CORE_LIBRARY and G2O_STUFF_LIBRARY （有时候只需要一个）。经测试，不能将 g2o 的 LIBRARY 写成 LIBRARIES 
 # pcl got。 
 # googletest got。
 
@@ -208,10 +208,10 @@ endif()
 # brew安装的版本是 2017/07/30 发布的老版本 g2o。 新版本 g2o 相较于老版本有一定的变化：把原来的祼指针统一改成了智能指针。因此不要用brew安装，而自己从 Github pull 下来再编译。
 # g2o 链接库时，需使用 G2O_CORE_LIBRARY and G2O_STUFF_LIBRARY，而不是一般的写法：G2O_LIBRARIES
 # 这条命令在某些时候有用(??)
-# list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_HOME_DIRECTORY}/modules)
 find_package(G2O REQUIRED)
 if (G2O_FOUND)
-    message("Found g2o" " Path ${G2O_INCLUDE_DIRS}")
+    message("Found g2o" " Path ${G2O_INCLUDE_DIR}")
 else()
     message("Not Found g2o")
 endif()
@@ -248,7 +248,7 @@ include_directories(BEFORE
 
 
 # 设置编译生成的共享库的存放目录
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
 
 # 一种看起来更贴近CMake的命名方式
 # add_library(${PROJECT_NAME} SHARED
@@ -281,6 +281,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/shared)
 # add_subdirectory(tmp/pcl_write)
 
 # My codes 
-# add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
-add_subdirectory(${CMAKE_HOME_DIRECTORY}/src ${CMAKE_BINARY_DIR}/exe)
+add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/src ${CMAKE_BINARY_DIR}/src)
 

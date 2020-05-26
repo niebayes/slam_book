@@ -14,6 +14,7 @@ class DataFunctor {
 };
 
 using dataset = std::vector<std::pair<double, double>>;
-dataset generate_data(DataFunctor* df, const double sigma);
+dataset generate_data(DataFunctor* df, const int dataset_size,
+                      const double sigma, const bool additive_noise);
 
 #endif  // SLAMBOOK_GENERATE_DATA_H_
