@@ -42,6 +42,7 @@
 
 namespace g2o {
 
+// * forward declaration
 class HyperGraphAction;
 struct OptimizationAlgorithmProperty;
 class CacheContainer;
@@ -68,12 +69,13 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
   typedef std::set<HyperGraphAction*> HyperGraphActionSet;
 
   // * 前置声明 的作用: 在类中的作用主要是解决类之间的交叉引用。
+  // * 在这里，主要是为了能够在定义这些类之前使用它们。
   // forward declarations
   class G2O_CORE_API Vertex;
   class G2O_CORE_API Edge;
 
   /**
-   * \briefly order vertices based on their ID
+   * \brief order vertices based on their ID
    */
   struct G2O_CORE_API VertexIDCompare {
     bool operator()(const Vertex* v1, const Vertex* v2) const {
@@ -107,18 +109,18 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
    public:
     Vertex();
 
-    //! returns a deep copy of the current vertex
+    // * returns a deep copy of the current vertex
     virtual Vertex* clone() const;
 
     virtual ~Vertex();
 
-    //! sets the node to the origin (used in the multilevel stuff)
+    // * sets the node to the origin (used in the multilevel stuff)
     void setToOrigin() {
       setToOriginImpl();
       updateCache();
     }
 
-    //! get the element from the hessian matrix
+    // * get the element from the hessian matrix
     virtual const number_t& hessian(int i, int j) const = 0;
     virtual number_t& hessian(int i, int j) = 0;
     virtual number_t hessianDeterminant() const = 0;
@@ -133,10 +135,10 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
      */
     virtual int copyB(number_t* b_) const = 0;
 
-    //! get the b vector element
+    // * get the b vector element
     virtual const number_t& b(int i) const = 0;
     virtual number_t& b(int i) = 0;
-    //! return a pointer to the b vector associated with this vertex
+    // * return a pointer to the b vector associated with this vertex
     virtual number_t* bData() = 0;
 
     /**
