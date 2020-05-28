@@ -32,9 +32,8 @@ class CurveFittingVertex : public g2o::BaseVertex<3, Eigen::Vector3d> {
     _estimate += Eigen::Vector3d(update);
   }
 
-  virtual bool read(std::istream& in) {}
-
-  virtual bool wirte(std::ostream& out) const {}
+  virtual bool read(std::istream& is) override {}
+  virtual bool write(std::ostream& os) const override {}
 };
 
 class CurveFittingEdge
@@ -62,8 +61,8 @@ class CurveFittingEdge
     _jacobianOplusXi[2] = -y;
   }
 
-  virtual bool read(std::istream& in) {}
-  virtual bool write(std::ostream& out) const {}
+  virtual bool read(std::istream& is) override {}
+  virtual bool write(std::ostream& os) const override {}
 
  public:
   double x_;
@@ -75,23 +74,31 @@ int main(int argc, char** argv) {
                            1.};  // beta: given params for generate data.
   int dataset_size = 100;
   double sigma = 1.;
-  bool additive_noise = true;
-  DataFunctor func(real_beta);
-  auto dataset = generate_data(&func, dataset_size, sigma, additive_noise);
-  plot2d_curve(dataset);
+  cv::RNG rng;
+  vector<pair<double, double>> dataset;
+  for (int i = 0; i < dataset_size; ++i) {
+    double x = i / 100.;
+    double y =
+        std::exp(real_beta[0] * x * x + real_beta[1] * x + real_beta[2]) +
+        rng.gaussian(sigma);
+    dataset.emplace_back(x, y);
+  }
 
   // * Estimands
   vector<double> beta{2., -1., 5.};
 
   // * Set up g2o:
-  // * 设置优化对象的维度
-  // * 使用线性求解，并结社线性求解器类型
+  // * 设置块求解器类型: BlockSolverTraits
+  // TODO ? Why this type ?
   using BlockSolverType = g2o::BlockSolver<g2o::BlockSolverTraits<3, 1>>;
+  // * 使用线性求解，并设置线性求解器类型: Dense
   using LinearSolverType =
       g2o::LinearSolverDense<BlockSolverType::PoseMatrixType>;
 
   // * Set up optimization method:
-  // * Gradient method: GN, LM, DogLeg
+  // * Choose one of the listed Gradient methods: GN, LM, DogLeg
+  // * Here, we choose GM.
+  // TODO ? What does this statment mean ?
   auto solver = new g2o::OptimizationAlgorithmGaussNewton(
       g2o::make_unique<BlockSolverType>(g2o::make_unique<LinearSolverType>()));
   g2o::SparseOptimizer optimizer;

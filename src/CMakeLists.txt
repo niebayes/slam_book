@@ -10,5 +10,7 @@ add_executable(g2o_curve_fitting g2o_curve_fitting.cc)
 target_link_libraries(g2o_curve_fitting 
   ${G2O_LIBRARIES}
   ${OpenCV_LIBRARIES}
+  -lplot2d_curve 
+  -lgenerate_data
 )
 

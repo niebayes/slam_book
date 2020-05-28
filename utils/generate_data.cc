@@ -5,7 +5,7 @@
 #include <utility>     // std::pair
 #include <vector>      // std::vector
 
-#include "opencv2/core.hpp"  // cv::RNG
+#include "opencv2/core/core.hpp"  // cv::RNG
 
 DataFunctor::DataFunctor(std::vector<double> beta) : beta_(beta) {}
 

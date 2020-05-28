@@ -281,6 +281,6 @@ include_directories(BEFORE
 # add_subdirectory(tmp/pcl_write)
 
 # My codes 
-add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
+# add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
 add_subdirectory(${CMAKE_HOME_DIRECTORY}/src ${CMAKE_BINARY_DIR}/src)
 

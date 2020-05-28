@@ -104,6 +104,7 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
   class G2O_CORE_API Vertex : public HyperGraph::Vertex,
                               public HyperGraph::DataContainer {
    private:
+    // * first declare a struct, and then make it a friend.
     friend struct OptimizableGraph;
 
    public:
@@ -258,6 +259,7 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
      * carry out the update. Will also call updateCache() to update the caches
      * of depending on the vertex.
      */
+    // * user-impl.
     void oplus(const number_t* v) {
       oplusImpl(v);
       updateCache();
@@ -308,8 +310,10 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
     void unlockQuadraticForm() { _quadraticFormMutex.unlock(); }
 
     //! read the vertex from a stream, i.e., the internal state of the vertex
+    // * user-impl.
     virtual bool read(std::istream& is) = 0;
     //! write the vertex to a stream
+    // * user-impl.
     virtual bool write(std::ostream& os) const = 0;
 
     virtual void updateCache();
@@ -332,9 +336,13 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
      * update the position of the node from the parameters in v.
      * Implement in your class!
      */
+    // * user-impl.
+    // * update the state of x (the params to be estimated).
     virtual void oplusImpl(const number_t* v) = 0;
 
     //! sets the node to the origin (used in the multilevel stuff)
+    // * user-impl.
+    // TODO ? What does origin mean ?
     virtual void setToOriginImpl() = 0;
 
     /**
@@ -427,10 +435,15 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
      * Linearizes the constraint in the edge in the manifold space, and store
      * the result in the given workspace
      */
+    // * user-impl.
+    // * linearize the constraints by applying jacobian on the delta params.
+    // * though this is implemented in the manifold space, hence oplus operator.
     virtual void linearizeOplus(JacobianWorkspace& jacobianWorkspace) = 0;
 
     /** set the estimate of the to vertex, based on the estimate of the from
      * vertices in the edge. */
+    // * user-impl.
+    // * prediced estimation of the vertex.
     virtual void initialEstimate(const OptimizableGraph::VertexSet& from,
                                  OptimizableGraph::Vertex* to) = 0;
 
@@ -447,6 +460,7 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
       return -1.;
     }
 
+    // * used in hierarchical methods.
     //! returns the level of the edge
     int level() const { return _level; }
     //! sets the level of the edge
@@ -460,8 +474,10 @@ struct G2O_CORE_API OptimizableGraph : public HyperGraph {
     virtual Vertex* createVertex(int) { return nullptr; }
 
     //! read the vertex from a stream, i.e., the internal state of the vertex
+    // * user-impl.
     virtual bool read(std::istream& is) = 0;
     //! write the vertex to a stream
+    // * user-impl.
     virtual bool write(std::ostream& os) const = 0;
 
     //! the internal ID of the edge
