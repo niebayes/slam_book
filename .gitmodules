@@ -1,0 +1,12 @@
+[submodule "external/3dv_tutorial"]
+	path = external/3dv_tutorial
+	url = git@github.com:niebayes/3dv_tutorial.git
+[submodule "external/manif"]
+	path = external/manif
+	url = git@github.com:niebayes/manif.git
+[submodule "external/g2o"]
+	path = external/g2o
+	url = git@github.com:niebayes/g2o.git
+[submodule "external/ORB_SLAM2"]
+	path = external/ORB_SLAM2
+	url = git@github.com:niebayes/ORB_SLAM2.git
