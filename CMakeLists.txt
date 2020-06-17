@@ -286,7 +286,7 @@ include_directories(BEFORE
 # Notes about CMAKE_HOME_DIRECTORY:
 # Path to top of source tree. Same as CMAKE_SOURCE_DIR.
 # This is an internal cache entry used to locate the source directory when loading a CMakeCache.txt from a build tree. It should not be used in project code. The variable CMAKE_SOURCE_DIR has the same value and should be preferred.
-message(${CMAKE_HOME_DIRECTORY})
-message(${CMAKE_SOURCE_DIR})
-add_subdirectory(${CMAKE_HOME_DIRECTORY}/src ${CMAKE_BINARY_DIR}/src)
+# message(${CMAKE_HOME_DIRECTORY})
+# message(${CMAKE_SOURCE_DIR})
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
 
