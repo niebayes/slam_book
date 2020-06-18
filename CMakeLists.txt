@@ -118,7 +118,8 @@
 
 # The FATAL_ERROR option is accepted but ignored by CMake 2.6 and higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just a warning.
 # cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
-cmake_minimum_required(VERSION 3.0)
+# The FATAL_ERROR option is accepted but ignored by CMake 2.6 and higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just a warning.
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(HelloSLAM) 
 
 # 设定编译类型：Debug, Release, etc.
@@ -226,6 +227,14 @@ else()
     message("Not Found pcl")
 endif()
 
+# PCL usage template
+# find_package(PCL 1.3 REQUIRED COMPONENTS common io)
+# include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+# add_executable(pcd_write_test pcd_write.cc)
+# target_link_libraries(pcd_write_test ${PCL_LIBRARIES})
+
 # glog 
 # To use glog, follow instructions below.
 # find_package(glog REQUIRED) 
@@ -241,9 +250,10 @@ include_directories(BEFORE
     ${OpenCV_INCLUDE_DIRS}
     ${CERES_INCLUDE_DIRS}
     ${G2O_INCLUDE_DIRS}
+    ${PCL_INCLUDE_DIRS}
     # "/Users/bayes/slam_lib/g2o"
-    # ${PCL_INCLUDE_DIRS}
 ) # path relative to this CMakeLists.txt
+
 
 
 
@@ -280,13 +290,15 @@ include_directories(BEFORE
 # add_subdirectory(src/ch6/g2o_curve_fitting)
 # add_subdirectory(tmp/pcl_write)
 
-# My codes 
-# add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
-
 # Notes about CMAKE_HOME_DIRECTORY:
 # Path to top of source tree. Same as CMAKE_SOURCE_DIR.
 # This is an internal cache entry used to locate the source directory when loading a CMakeCache.txt from a build tree. It should not be used in project code. The variable CMAKE_SOURCE_DIR has the same value and should be preferred.
 # message(${CMAKE_HOME_DIRECTORY})
 # message(${CMAKE_SOURCE_DIR})
-add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
+
+# Utils
+add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
+
+# Exes
+# add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
 

@@ -1,11 +1,13 @@
 #include <cmath>
-#include <typeinfo>
 #include <fstream>
+#include <iomanip>  // std::boolalpha
 #include <iostream>
 #include <string>
+#include <typeinfo>
 #include <vector>
 
 #include "opencv2/opencv.hpp"
+#include "three_d_vision.h"
 
 // Rotation around major axes
 // * OpenCV is row-major which stores elements row by row
@@ -24,6 +26,10 @@
 // * Access entries in Vec: using indices;
 // * Access entries in Point: using x, y, z, ... members.
 cv::Mat euler_angles_to_rotation_matrix(cv::Point3d& p) {
+  // * When combined with << operator or with a user-defined data type for
+  // * entries, use cv::Mat_
+  // * Otherwise, use cv::Mat and specify the size and the type in the
+  // * constructor arguments.
   cv::Mat Rx = (cv::Mat_<double>(3, 3) << 1, 0, 0, 0, std::cos(p.x),
                 -std::sin(p.x), 0, std::sin(p.x), std::cos(p.x));
   cv::Mat Ry = (cv::Mat_<double>(3, 3) << std::cos(p.y), 0, std::sin(p.y), 0, 1,
@@ -73,8 +79,6 @@ int main(int argc, char** argv) {
     // ? The >> operator automatically do type conversion and casting?
     istr >> x >> y >> z;
     // Homogeneous coord.
-    // std::cout << x << " " << y << " " << z << "\n";
-    // std::cout << typeid(x).name() << "\n";
     // * Mat.push_back(), add a line (row) to the bottom of the Mat
     // * Emulate the action of the push_back() of std::vector.
     X.push_back(cv::Vec4d(x, y, z, 1));
@@ -89,8 +93,8 @@ int main(int argc, char** argv) {
     // Derive a projection matrix
     // * We choose this order of rotations combination
     // * because it corresponds the yaw, pitch, roll convention
-    // cv::Mat Rc = Rz(cam_ori[i].z) * Ry(cam_ori[i].y) * Rx(cam_ori[i].x);
     cv::Mat Rc = euler_angles_to_rotation_matrix(cam_ori[i]);
+    std::cout << std::boolalpha << is_valid_rotation_mat(Rc) << "\n";
     cv::Mat tc(cam_pos[i]);
     cv::Mat Rt;
     cv::hconcat(Rc.t(), -Rc.t() * tc, Rt);
