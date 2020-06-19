@@ -1,9 +1,9 @@
-#ifndef THREE_D_VISION_H_
-#define THREE_D_VISION_H_
+#ifndef VISION_UTILS_H_
+#define VISION_UTILS_H_
 
 #include "opencv2/core/core.hpp"
 
-bool is_valid_rotation_mat(cv::Mat &R);
+bool is_valid_R(cv::Mat &R);
 
 struct EulerAngles {
   double theta_x;  // roll
@@ -13,4 +13,6 @@ struct EulerAngles {
 
 EulerAngles decompose_R(cv::Mat &R);
 
-#endif  // THREE_D_VISION_H_
+cv::Matx33d euler_angles_to_rotation_matrix(cv::Point3d& p);
+
+#endif  // VISION_UTILS_H_

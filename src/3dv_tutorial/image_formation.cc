@@ -10,7 +10,7 @@
 #include "pcd_io_utils.h"
 #include "pcl/io/pcd_io.h"
 #include "pcl/point_types.h"
-#include "three_d_vision.h"
+#include "vision_utils.h"
 
 // Rotation around major axes
 // * OpenCV is row-major which stores elements row by row

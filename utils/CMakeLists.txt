@@ -13,12 +13,12 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 #   ${OpenCV_LIBRARIES}
 # )
 
-# add_library(three_d_vision SHARED three_d_vision.cc)
-# target_link_libraries(three_d_vision 
+# add_library(vision_utils SHARED vision_utils.cc)
+# target_link_libraries(vision_utils 
 #   ${OpenCV_LIBRARIES}
 # )
 
-add_library(pcd_io_utils SHARED pcd_io_utils.cc)
-target_link_libraries(pcd_io_utils
-  ${PCL_LIBRARIES}
-)
+# add_library(pcd_io_utils SHARED pcd_io_utils.cc)
+# target_link_libraries(pcd_io_utils
+#   ${PCL_LIBRARIES}
+# )
