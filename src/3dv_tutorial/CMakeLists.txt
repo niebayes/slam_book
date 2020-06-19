@@ -24,6 +24,8 @@ message(${CMAKE_HOME_DIRECTORY})
 add_executable(image_formation image_formation.cc)
 target_link_libraries(image_formation 
   ${OpenCV_LIBRARIES}
+  ${PCL_LIBRARIES}
   ${CMAKE_HOME_DIRECTORY}/lib/libthree_d_vision.dylib
+  ${CMAKE_HOME_DIRECTORY}/lib/libpcd_io_utils.dylib
 )
 

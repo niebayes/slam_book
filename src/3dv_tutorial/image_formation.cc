@@ -7,6 +7,9 @@
 #include <vector>
 
 #include "opencv2/opencv.hpp"
+#include "pcd_io_utils.h"
+#include "pcl/io/pcd_io.h"
+#include "pcl/point_types.h"
 #include "three_d_vision.h"
 
 // Rotation around major axes
@@ -44,7 +47,8 @@ int main(int argc, char** argv) {
   // Given camera parameters: focal length, principal point (to denote the
   // position of the image plane), image resolution (width x height), camera
   // position, and camera orientation
-  double f = 1000, cx = 320, cy = 240, noise_sigma = 1;
+  // * The unit is pixel.
+  double f = 1000, ox = 320, oy = 240, noise_sigma = 1;
   // * cv::Size, template class for specifying the size of an image or
   // * rectangle.
   cv::Size img_res(640, 480);  // * image resolution, width x height
@@ -71,6 +75,11 @@ int main(int argc, char** argv) {
   // * cf. https://stackoverflow.com/q/6396330/11240780
   std::ifstream fin("data/3dv_tutorial/box.xyz", std::ios::in);
   if (!fin.is_open()) return -1;
+  // ! cv::Mat is just an n-dimensional dense array
+  // ! When the X.push_bacl operations over, X becomes an array in which
+  // ! elements are cv::Vec4d.
+  // ! Hence, we need to reshape X to a rectangular-like matrix for the matrix
+  // ! operations later on.
   cv::Mat X;
   std::string data;
   while (std::getline(fin, data)) {
@@ -88,17 +97,21 @@ int main(int argc, char** argv) {
   X = X.reshape(1).t();
 
   // Generate images for each camera pose
-  cv::Mat K{(cv::Mat_<double>(3, 3) << f, 0, cx, 0, f, cy, 0, 0, 1)};
-  for (int i = 0; i < cam_pos.size(); ++i) {
+  cv::Mat K{(cv::Mat_<double>(3, 3) << f, 0, ox, 0, f, oy, 0, 0, 1)};
+  for (std::size_t i = 0; i < cam_pos.size(); ++i) {
     // Derive a projection matrix
     // * We choose this order of rotations combination
     // * because it corresponds the yaw, pitch, roll convention
-    cv::Mat Rc = euler_angles_to_rotation_matrix(cam_ori[i]);
-    std::cout << std::boolalpha << is_valid_rotation_mat(Rc) << "\n";
-    cv::Mat tc(cam_pos[i]);
-    cv::Mat Rt;
-    cv::hconcat(Rc.t(), -Rc.t() * tc, Rt);
-    cv::Mat P = K * Rt;
+    cv::Mat R = euler_angles_to_rotation_matrix(cam_ori[i]);
+    cv::Mat T(cam_pos[i]);
+    cv::Mat g;
+    cv::hconcat(R, T, g);
+    cv::Mat P = K * g;
+    // cv::Mat T(cam_pos[i]);
+    // cv::Mat g;
+    // ? Why inverse the rigid transformation matrix
+    // cv::hconcat(R.t(), -R.t() * T, g);
+    // cv::Mat P = K * g;
 
     // Project the points
     cv::Mat x = P * X;
@@ -121,10 +134,22 @@ int main(int argc, char** argv) {
     // * cv::format acts like printf
     // * In C++ 20, we can use std::format defined in the <format> header
     // * Otherwise, we can use boost::format with the boost lib installed.
-    cv::imshow(cv::format("Image Formation %d", i), image);
+    cv::imshow(cv::format("Image Formation %lu", i), image);
+
+    // Store the projected points in pcd file
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+    cloud.width = x.cols;
+    cloud.height = 1;
+    for (std::size_t c = 0; c < x.cols; ++c) {
+      // cv::Point p(x.col(c).rowRange(0, 2));
+      // cloud.emplace_back(p.x, p.y, 1);
+      cloud.emplace_back(x.at<double>(0, c), x.at<double>(1, c), 1);
+    }
+    pcl::io::savePCDFileASCII(
+        cv::format("data/3dv_tutorial/pcd/image_formation%lu.pcd", i), cloud);
 
     std::ofstream fout(
-        cv::format("data/3dv_tutorial/out/image_formation%d.xyz", i),
+        cv::format("data/3dv_tutorial/out/image_formation%lu.xyz", i),
         std::ios::out);
 
     if (!fout.is_open()) return -1;

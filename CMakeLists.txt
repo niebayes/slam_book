@@ -297,8 +297,8 @@ include_directories(BEFORE
 # message(${CMAKE_SOURCE_DIR})
 
 # Utils
-add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
+# add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
 
 # Exes
-# add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
 

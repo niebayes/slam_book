@@ -18,7 +18,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 #   ${OpenCV_LIBRARIES}
 # )
 
-add_executable(pcd_io_utils pcd_io_utils.cc)
+add_library(pcd_io_utils SHARED pcd_io_utils.cc)
 target_link_libraries(pcd_io_utils
   ${PCL_LIBRARIES}
 )

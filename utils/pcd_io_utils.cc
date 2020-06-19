@@ -9,7 +9,12 @@
 #include "pcl/io/pcd_io.h"    // pcl::io::savePCDFile
 #include "pcl/point_types.h"  // pcl::PointXYZ
 
-bool pcd_write(std::string filepath, std::string output_file) {
+bool pcd_write(std::string filepath,
+               pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
+  return true;
+}
+
+bool pcd_write_from_xyz(std::string filepath, std::string output_file) {
   // @return true if no error and false otherwise
   pcl::PointCloud<pcl::PointXYZ> cloud;
 
@@ -49,7 +54,15 @@ bool pcd_load(std::string filepath) {
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
   pcl::PCLPointCloud2 cloud_blob;
+  // pcl::io::loadPCDFile<pcl::PointXYZ>(filepath, *cloud);
   // * template-free loadPCDFile version for binary file loading.
+  // * Alternatively, you can read a PCLPointCloud2 blob (available only in
+  // * PCL 1.x). Due to the dynamic nature of point clouds, we prefer to read
+  // them
+  // * as binary blobs, and then convert to the actual representation that we
+  // want
+  // * to use.
+  // ! In C++, non-zero will be converted to true, so as -1
   if (pcl::io::loadPCDFile(filepath, cloud_blob) == -1) {
     // * Macros cannot be placed within namespaces
     // * Hence no need to denote it with scope resolution operator ::
@@ -70,14 +83,14 @@ bool pcd_load(std::string filepath) {
 void test() {
   // pcd_write test
   std::string filepath("data/3dv_tutorial/box.xyz");
-  std::cerr << std::boolalpha << pcd_write(filepath, "box") << '\n';
+  std::cerr << std::boolalpha << pcd_write_from_xyz(filepath, "box") << '\n';
 
   // pcd_load test
   std::cerr << std::boolalpha << pcd_load("data/3dv_tutorial/pcd/box.pcd")
             << '\n';
 }
 
-int main(int argc, char** argv) {
-  // test();
-  return 0;
-}
+// int main(int argc, char** argv) {
+//   // test();
+//   return 0;
+// }
