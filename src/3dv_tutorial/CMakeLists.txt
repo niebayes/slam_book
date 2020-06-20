@@ -29,9 +29,14 @@ message(${CMAKE_HOME_DIRECTORY})
 #   ${CMAKE_HOME_DIRECTORY}/lib/libpcd_io_utils.dylib
 # )
 
-add_executable(object_localization object_localization.cc)
-target_link_libraries(object_localization 
+# add_executable(object_localization object_localization.cc)
+# target_link_libraries(object_localization 
+#   ${OpenCV_LIBRARIES}
+#   ${CMAKE_HOME_DIRECTORY}/lib/libvision_utils.dylib
+# )
+
+add_executable(distortion_correction distortion_correction.cc)
+target_link_libraries(distortion_correction
   ${OpenCV_LIBRARIES}
-  ${CMAKE_HOME_DIRECTORY}/lib/libvision_utils.dylib
 )
 
