@@ -1,9 +1,14 @@
 // * OpenCV video input tutorial, cf.
 // * https://docs.opencv.org/4.3.0/d5/dc4/tutorial_video_input_psnr_ssim.html
+
 // * OpenCV Flags for video I/O, cf.
 // * https://docs.opencv.org/4.3.0/d4/d15/group__videoio__flags__base.html#ggaeb8dd9c89c10a5c63c139bf7c4f5704da6223452891755166a4fd5173ea257068
+
 // * cv::remap cf.
 // * https://docs.opencv.org/3.4/d1/da0/tutorial_remap.html
+
+// * cv::initUndistortRectifyMap cf.
+// * https://docs.opencv.org/3.1.0/da/d54/group__imgproc__transform.html#ga7dfb72c9cf9780a347fbe3d1c47e5d5a
 #include <vector>
 
 #include "opencv2/opencv.hpp"
@@ -51,11 +56,21 @@ int main(int argc, char** argv) {
     // Rectify geometric distortion
     cv::String info("Original");
     if (show_rectify) {
-      if (map1.empty() || map2.empty())
+      if (map1.empty() || map2.empty()) {
         // * OpenCV internal cv::InputArray can be constructed from cv::Mat,
         // * std::vector, std::vector<std::vector>, and many others.
+        // * cv::undistort() = cv::initUndistortRectifyMap() with unity R +
+        // * cv::remap() with bilinear interpolation
+        // * When distoring many images, e.g. images read from a video,
+        // * it's better to use cv::initUndistortRectifyMap once and followed by
+        // * various times of cv::remap to accelerate distortion.
+        // ! In monocular case, the param R is assumed to be unity R, you can
+        // ! only also pass an empty cv::Mat(), OpenCV will implicitly replace
+        // ! it; In stereo case, the rotation matrix R computed by
+        // ! cv::stereoRectify() can be passed here.
         cv::initUndistortRectifyMap(P, dist_coeffs, cv::Mat(), cv::Mat(),
                                     image.size(), CV_32FC1, map1, map2);
+      }
       cv::remap(image, image, map1, map2, cv::InterpolationFlags::INTER_LINEAR);
       info = "Rectified";
     }

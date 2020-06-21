@@ -35,8 +35,12 @@ message(${CMAKE_HOME_DIRECTORY})
 #   ${CMAKE_HOME_DIRECTORY}/lib/libvision_utils.dylib
 # )
 
-add_executable(distortion_correction distortion_correction.cc)
-target_link_libraries(distortion_correction
+# add_executable(distortion_correction distortion_correction.cc)
+# target_link_libraries(distortion_correction
+#   ${OpenCV_LIBRARIES}
+# )
+
+add_executable(camera_calibration tt.cpp)
+target_link_libraries(camera_calibration
   ${OpenCV_LIBRARIES}
 )
-
