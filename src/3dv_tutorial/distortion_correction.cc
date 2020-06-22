@@ -15,8 +15,9 @@
 
 int main(int argc, char** argv) {
   constexpr auto input = "data/3dv_tutorial/video/chessboard.avi";
-  // Given camera matrix = intrinsic matrix * extrinsic matrix
-  const cv::Matx33d P{432.7390364738057,
+  // ! In OpenCV, camera matrix = intrinsic matrix, and the extrinsic
+  // ! matrix is specified with the rotation vector and the translation vector.
+  const cv::Matx33d K{432.7390364738057,
                       0,
                       476.0614994349778,
                       0,
@@ -68,7 +69,7 @@ int main(int argc, char** argv) {
         // ! only also pass an empty cv::Mat(), OpenCV will implicitly replace
         // ! it; In stereo case, the rotation matrix R computed by
         // ! cv::stereoRectify() can be passed here.
-        cv::initUndistortRectifyMap(P, dist_coeffs, cv::Mat(), cv::Mat(),
+        cv::initUndistortRectifyMap(K, dist_coeffs, cv::Mat(), cv::Mat(),
                                     image.size(), CV_32FC1, map1, map2);
       }
       cv::remap(image, image, map1, map2, cv::InterpolationFlags::INTER_LINEAR);

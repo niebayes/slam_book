@@ -300,7 +300,7 @@ include_directories(BEFORE
 # add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
 
 # Exes
-# add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
 
 # Tests 
 # add_subdirectory(${CMAKE_HOME_DIRECTORY}/test ${CMAKE_BINARY_DIR}/test)

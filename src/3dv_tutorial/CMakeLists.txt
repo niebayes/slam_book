@@ -40,7 +40,7 @@ message(${CMAKE_HOME_DIRECTORY})
 #   ${OpenCV_LIBRARIES}
 # )
 
-add_executable(camera_calibration tt.cpp)
+add_executable(camera_calibration camera_calibration.cc)
 target_link_libraries(camera_calibration
   ${OpenCV_LIBRARIES}
 )
