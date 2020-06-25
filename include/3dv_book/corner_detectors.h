@@ -1,0 +1,4 @@
+#ifndef CORNER_DETECTORS_H_
+#define CORNER_DETECTORS_H_
+ 
+#endif  // CORNER_DETECTORS_H_

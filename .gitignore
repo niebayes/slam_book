@@ -45,3 +45,5 @@ build
 *.exe
 *.out
 *.app
+external/opencv_tutorial/camera_calibration.cpp
+external/opencv_tutorial/camera_calibration.cpp

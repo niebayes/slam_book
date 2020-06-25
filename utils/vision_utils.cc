@@ -17,7 +17,7 @@ bool is_valid_R(cv::Mat &R) {
 
 EulerAngles decompose_R(cv::Mat &R) {
   // * cf. http://nghiaho.com/?page_id=846
-  // @ brief decompose the valid rotation matrix to the set of euler angles
+  // @brief decompose the valid rotation matrix to the set of euler angles
   // which are bound in range.
   // @return theta_x: [-pi, pi]
   // @return theta_y: [-pi/2, pi/2]

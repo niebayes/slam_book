@@ -1,0 +1,4 @@
+#ifndef EDGE_DETECTORS_H_
+#define EDGE_DETECTORS_H_
+ 
+#endif  // EDGE_DETECTORS_H_

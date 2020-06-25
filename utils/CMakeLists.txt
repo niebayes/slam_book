@@ -22,3 +22,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 # target_link_libraries(pcd_io_utils
 #   ${PCL_LIBRARIES}
 # )
+
+add_executable(vision_book_utils vision_book_utils.cc)
+target_link_libraries(vision_book_utils 
+  ${OpenCV_LIBRARIES}
+)
