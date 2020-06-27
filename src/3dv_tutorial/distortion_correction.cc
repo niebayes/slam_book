@@ -81,6 +81,9 @@ int main(int argc, char** argv) {
     // Show the image
     constexpr auto winname = "Distortion Correction";
     cv::imshow(winname, image);
+    //! Consider using char key = static_cast<char>(cv::waitKey(1)) in
+    //! combination with e.g. if (key = 'c') to make the statement more
+    //! expressive.
     int key = cv::waitKey(1);
     if (key == 27)
       break;  // "ESC" key, exit the program

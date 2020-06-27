@@ -300,10 +300,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 
 # Utils
-add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
+# add_subdirectory(utils ${CMAKE_BINARY_DIR}/utils)
 
 # Exes
 # add_subdirectory(${CMAKE_HOME_DIRECTORY}/src/3dv_tutorial ${CMAKE_BINARY_DIR}/src)
 
 # Tests 
 # add_subdirectory(${CMAKE_HOME_DIRECTORY}/test ${CMAKE_BINARY_DIR}/test)
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/test/3dv_book ${CMAKE_BINARY_DIR}/test/3dv_book)
