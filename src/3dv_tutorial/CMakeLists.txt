@@ -45,7 +45,7 @@ message(${CMAKE_HOME_DIRECTORY})
 #   ${OpenCV_LIBRARIES}
 # )
 
-add_executable(perspective_correction tt.cpp)
-target_link_libraries(perspective_correction
+add_executable(pose_estimation_chessboard pose_estimation_chessboard.cc)
+target_link_libraries(pose_estimation_chessboard
     ${OpenCV_LIBRARIES}
 )

@@ -1,5 +1,5 @@
-#ifndef VISION_BOOK_UTILS_H_
-#define VISION_BOOK_UTILS_H_
+#ifndef MACROS_UTIL_H_
+#define MACROS_UTIL_H_
 
 #include <cstdlib>   // std::abort
 #include <iostream>  // std::cerr
@@ -33,4 +33,4 @@
 //       cv::error(cv::Error::StsAssert, #expr, CV_Func, __FILE__, __LINE__); \
 //   } while (0)
 
-#endif  // VISION_BOOK_UTILS_H_
+#endif  // MACROS_UTIL_H_

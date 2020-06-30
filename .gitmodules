@@ -10,3 +10,6 @@
 [submodule "external/ORB_SLAM2"]
 	path = external/ORB_SLAM2
 	url = git@github.com:niebayes/ORB_SLAM2.git
+[submodule "external/pnp"]
+	path = external/pnp
+	url = git@github.com:midjji/pnp.git
