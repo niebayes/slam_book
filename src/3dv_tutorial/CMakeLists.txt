@@ -45,7 +45,22 @@ message(${CMAKE_HOME_DIRECTORY})
 #   ${OpenCV_LIBRARIES}
 # )
 
-add_executable(pose_estimation_chessboard pose_estimation_chessboard.cc)
-target_link_libraries(pose_estimation_chessboard
+# add_executable(pose_estimation_chessboard pose_estimation_chessboard.cc)
+# target_link_libraries(pose_estimation_chessboard
+#     ${OpenCV_LIBRARIES}
+# )
+
+# add_executable(pose_estimation_book1 pose_estimation_book1.cc)
+# target_link_libraries(pose_estimation_book1
+#     ${OpenCV_LIBRARIES}
+# )
+
+# add_executable(pose_estimation_book2 pose_estimation_book2.cc)
+# target_link_libraries(pose_estimation_book2
+#     ${OpenCV_LIBRARIES}
+# )
+
+add_executable(pose_estimation_book3 pose_estimation_book3.cpp)
+target_link_libraries(pose_estimation_book3
     ${OpenCV_LIBRARIES}
 )

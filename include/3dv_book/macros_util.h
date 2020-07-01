@@ -33,4 +33,7 @@
 //       cv::error(cv::Error::StsAssert, #expr, CV_Func, __FILE__, __LINE__); \
 //   } while (0)
 
+#define LOAD_ERROR "Unable to load this file!"
+#define COMPUTE_ERROR "Failed to compute!"
+
 #endif  // MACROS_UTIL_H_
