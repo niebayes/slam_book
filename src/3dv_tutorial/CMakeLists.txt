@@ -60,7 +60,7 @@ message(${CMAKE_HOME_DIRECTORY})
 #     ${OpenCV_LIBRARIES}
 # )
 
-add_executable(pose_estimation_book3 pose_estimation_book3.cpp)
+add_executable(pose_estimation_book3 pose_estimation_book3.cc)
 target_link_libraries(pose_estimation_book3
     ${OpenCV_LIBRARIES}
 )
