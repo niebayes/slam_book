@@ -60,7 +60,12 @@ message(${CMAKE_HOME_DIRECTORY})
 #     ${OpenCV_LIBRARIES}
 # )
 
-add_executable(pose_estimation_book3 pose_estimation_book3.cc)
-target_link_libraries(pose_estimation_book3
+# add_executable(pose_estimation_book3 pose_estimation_book3.cc)
+# target_link_libraries(pose_estimation_book3
+#     ${OpenCV_LIBRARIES}
+# )
+
+add_executable(image_stitching image_stitching.cc)
+target_link_libraries(image_stitching
     ${OpenCV_LIBRARIES}
 )

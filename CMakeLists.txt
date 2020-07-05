@@ -244,6 +244,7 @@ add_definitions(${PCL_DEFINITIONS})
 include_directories(BEFORE
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/include/3dv_book
+    ${PROJECT_SOURCE_DIR}/include/3dv_book/utils
     ${PROJECT_SOURCE_DIR}/utils
     ${EIGEN3_INCLUDE_DIRS}
     # ${Sophus_INCLUDE_DIRS}
