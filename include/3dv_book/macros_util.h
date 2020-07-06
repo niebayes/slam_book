@@ -35,5 +35,6 @@
 
 #define LOAD_ERROR "Unable to load this file!"
 #define COMPUTE_ERROR "Failed to compute!"
+#define INSUFFICIENT_ERROR "Need more points / features!"
 
 #endif  // MACROS_UTIL_H_

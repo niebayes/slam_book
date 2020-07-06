@@ -65,7 +65,17 @@ message(${CMAKE_HOME_DIRECTORY})
 #     ${OpenCV_LIBRARIES}
 # )
 
-add_executable(image_stitching image_stitching.cc)
-target_link_libraries(image_stitching
-    ${OpenCV_LIBRARIES}
+# add_executable(image_stitching image_stitching.cc)
+# target_link_libraries(image_stitching
+#     ${OpenCV_LIBRARIES}
+# )
+
+# add_executable(video_stabilization video_stabilization.cpp)
+# target_link_libraries(video_stabilization
+#     ${OpenCV_LIBRARIES}
+# )
+
+add_executable(visual_odometry_epipolar visual_odometry_epipolar.cc)
+target_link_libraries(visual_odometry_epipolar
+  ${OpenCV_LIBRARIES}
 )
